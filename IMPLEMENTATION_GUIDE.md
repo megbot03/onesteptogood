@@ -302,3 +302,5 @@ setupHoverScale('#myButton', { scaleTo: 1.1 });
 *Implementation guide for One Step To Good website renovation*
 *Based on "The Intellectual Operating System" design strategy*
 
+
+
