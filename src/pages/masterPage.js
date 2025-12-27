@@ -43,7 +43,7 @@ const GLOBAL_CONFIG = {
     colors: {
         dark: '#1a1a1a',
         light: '#f5f2ed',
-        accent: '#c45a32',
+        accent: '#cc1100',
         navDefault: 'transparent',
         navScrolled: 'rgba(26, 26, 26, 0.95)'
     },

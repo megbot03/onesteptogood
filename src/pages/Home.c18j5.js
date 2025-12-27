@@ -1,6 +1,5 @@
 /**
  * ONE STEP TO GOOD - Homepage Velo Code
- * "The Intellectual Operating System"
  * 
  * Enhanced with marjoballabani.me-inspired premium animations
  * Features: IP Showcase, Journey Timeline, Asymmetric Reveals
@@ -66,6 +65,9 @@
  * - #footerSection    : Footer container
  * - #emailInput       : Input field for newsletter (optional)
  * - #subscribeBtn     : Button for newsletter submit (optional)
+ * - #termsLink        : Text element for "Terms and Conditions" link
+ * - #cookieLink       : Text element for "Cookie Policy" link
+ * - #privacyLink      : Text element for "Privacy Policy" link
  * 
  * ============================================
  */
@@ -114,7 +116,7 @@ const CONFIG = {
     colors: {
         dark: '#1a1a1a',
         light: '#f5f2ed',
-        accent: '#c45a32' // burnt orange
+        accent: '#cc1100' // blood orange
     }
 };
 
@@ -819,6 +821,15 @@ function initializeFooter() {
         });
     } catch (e) {
         console.log('Newsletter elements not found');
+    }
+
+    // Setup footer links
+    try {
+        $w('#termsLink').onClick(() => wixLocation.to('/terms-and-conditions'));
+        $w('#cookieLink').onClick(() => wixLocation.to('/cookie-policy'));
+        $w('#privacyLink').onClick(() => wixLocation.to('/privacy-policy'));
+    } catch (e) {
+        console.log('Footer link elements not found');
     }
 }
 
