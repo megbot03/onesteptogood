@@ -126,7 +126,7 @@ When creating elements in Wix Editor, assign these **exact IDs** (or update the 
 ```
 Primary Dark:     #1a1a1a
 Primary Light:    #f5f2ed
-Accent Orange:    #c45a32
+Accent Blood Orange:    #cc1100
 Accent Teal:      #1d7a8c (alternative)
 Text Primary:     #ffffff
 Text Secondary:   #a0a0a0
@@ -301,6 +301,8 @@ setupHoverScale('#myButton', { scaleTo: 1.1 });
 
 *Implementation guide for One Step To Good website renovation*
 *Based on "The Intellectual Operating System" design strategy*
+
+
 
 
 
