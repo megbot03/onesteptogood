@@ -33,7 +33,7 @@ export const OSG_BRAND = {
     colors: {
         dark: '#1a1a1a',
         light: '#f5f2ed',
-        accent: '#c45a32',       // Burnt orange
+        accent: '#cc1100',       // Blood orange
         accentAlt: '#1d7a8c',    // Deep teal (alternative)
         textPrimary: '#ffffff',
         textSecondary: '#a0a0a0'
