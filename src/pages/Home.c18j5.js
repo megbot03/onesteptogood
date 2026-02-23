@@ -10,6 +10,13 @@
  * 
  * HERO SECTION:
  * - #heroSection      : Container/Box for the full-screen hero
+ * - #ceoSectionLabel  : Text element for "ABOUT THE CEO"
+ * - #ceoName          : Large text element for "Aunray Stanford"
+ * - #ceoBio           : Text element for CEO description
+ * - #ceoLinkedinBtn   : Button for LinkedIn profile
+ * - #ceoGithubBtn     : Button for GitHub profile
+ * - #ceoMediumBtn     : Button for Medium profile
+ * - #ceoEmailBtn      : Button for Email contact
  * - #heroQuote        : Text element for "WATCH HOW WE CONTROL THE NARRATIVE"
  * - #heroAuthor       : Text element for "— Omar Al-Sudani"
  * - #scrollIndicator  : Button/Icon for scroll down indicator
@@ -117,6 +124,18 @@ const CONFIG = {
         dark: '#1a1a1a',
         light: '#f5f2ed',
         accent: '#cc1100' // blood orange
+    }
+};
+
+const CEO_PROFILE = {
+    sectionLabel: 'ABOUT THE CEO',
+    name: 'Aunray Stanford',
+    bio: "I'm a community technologist, researcher, community leader, and writer based in NYC.",
+    links: {
+        linkedin: 'https://www.linkedin.com/in/aunray-stanford/',
+        github: 'https://github.com/as12711',
+        medium: 'https://aunraystanford.medium.com/',
+        email: 'mailto:as12711@nyu.edu'
     }
 };
 
@@ -256,6 +275,7 @@ $w.onReady(function () {
     
     // Initialize all sections
     initializeHero();
+    initializeCEOButtons();
     initializeScrollAnimations();
     initializeDomainCards();
     initializeIPShowcase();
@@ -278,6 +298,13 @@ $w.onReady(function () {
 function initializeHero() {
     // Initially hide hero elements
     try {
+        $w('#ceoSectionLabel').hide();
+        $w('#ceoName').hide();
+        $w('#ceoBio').hide();
+        $w('#ceoLinkedinBtn').hide();
+        $w('#ceoGithubBtn').hide();
+        $w('#ceoMediumBtn').hide();
+        $w('#ceoEmailBtn').hide();
         $w('#heroQuote').hide();
         $w('#heroAuthor').hide();
         $w('#scrollIndicator').hide();
@@ -287,16 +314,46 @@ function initializeHero() {
     
     // Start hero animation after initial delay
     setTimeout(() => {
-        animateHeroQuote();
+        animateCEOIntro();
     }, CONFIG.heroRevealDelay);
+}
+
+function animateCEOIntro() {
+    try {
+        $w('#ceoSectionLabel').text = CEO_PROFILE.sectionLabel;
+        $w('#ceoName').text = CEO_PROFILE.name;
+        $w('#ceoBio').text = CEO_PROFILE.bio;
+    } catch (e) {
+        console.log('Some CEO text elements not found');
+    }
+
+    revealTextLines(['#ceoSectionLabel', '#ceoName', '#ceoBio'], {
+        duration: 650,
+        staggerDelay: 120,
+        direction: 'left'
+    });
+
+    setTimeout(() => {
+        try {
+            revealTextLines(['#ceoLinkedinBtn', '#ceoGithubBtn', '#ceoMediumBtn', '#ceoEmailBtn'], {
+                duration: 450,
+                staggerDelay: 80,
+                direction: 'up'
+            });
+        } catch (e) {
+            console.log('Some CEO CTA buttons not found');
+        }
+
+        setTimeout(animateScrollIndicator, 450);
+    }, 450);
 }
 
 /**
  * Typewriter-style reveal for the hero quote
- * "WATCH HOW WE CONTROL THE NARRATIVE"
+ * "Watch how we control the narrative"
  */
 function animateHeroQuote() {
-    const quote = "WATCH HOW WE CONTROL THE NARRATIVE";
+    const quote = "Watch how we control the narrative";
     
     try {
         const quoteElement = $w('#heroQuote');
@@ -340,8 +397,7 @@ function animateHeroAuthor() {
         });
         
         timeline.play().then(() => {
-            // Show scroll indicator after author appears
-            setTimeout(animateScrollIndicator, 600);
+            // Hero quote block appears after scroll indicator
         });
     } catch (e) {
         console.log('Hero author element not found');
@@ -373,6 +429,9 @@ function animateScrollIndicator() {
             });
         
         timeline.play();
+
+        // Reveal quote after indicator to keep CEO intro above scroll icon
+        setTimeout(animateHeroQuote, 550);
         
         // Click handler for smooth scroll
         indicator.onClick(() => {
@@ -383,6 +442,28 @@ function animateScrollIndicator() {
     } catch (e) {
         console.log('Scroll indicator not found');
     }
+}
+
+function initializeCEOButtons() {
+    const ctaMap = [
+        { selector: '#ceoLinkedinBtn', url: CEO_PROFILE.links.linkedin },
+        { selector: '#ceoGithubBtn', url: CEO_PROFILE.links.github },
+        { selector: '#ceoMediumBtn', url: CEO_PROFILE.links.medium },
+        { selector: '#ceoEmailBtn', url: CEO_PROFILE.links.email }
+    ];
+
+    ctaMap.forEach((item) => {
+        try {
+            const button = $w(item.selector);
+            if (item.selector === '#ceoLinkedinBtn') button.label = 'LinkedIn';
+            if (item.selector === '#ceoGithubBtn') button.label = 'GitHub';
+            if (item.selector === '#ceoMediumBtn') button.label = 'Medium';
+            if (item.selector === '#ceoEmailBtn') button.label = 'Email';
+            button.onClick(() => wixLocation.to(item.url));
+        } catch (e) {
+            console.log(`CEO CTA not found: ${item.selector}`);
+        }
+    });
 }
 
 // ============================================
@@ -847,7 +928,11 @@ function setupPremiumInteractions() {
     const magneticElements = [
         '#ipShowcaseCTA',
         '#subscribeBtn',
-        '#scrollIndicator'
+        '#scrollIndicator',
+        '#ceoLinkedinBtn',
+        '#ceoGithubBtn',
+        '#ceoMediumBtn',
+        '#ceoEmailBtn'
     ];
     
     magneticElements.forEach(selector => {
@@ -900,6 +985,7 @@ function adjustForMobile() {
         };
     }
 }
+
 
 /**
  * Navigate to an IP page

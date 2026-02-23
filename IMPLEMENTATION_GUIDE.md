@@ -15,6 +15,13 @@ When creating elements in Wix Editor, assign these **exact IDs** (or update the 
 | Wix Element | ID to Assign | Description |
 |-------------|--------------|-------------|
 | Hero container | `#heroSection` | Full-screen dark section |
+| CEO section label | `#ceoSectionLabel` | "ABOUT THE CEO" text |
+| CEO name | `#ceoName` | Large "Aunray Stanford" text |
+| CEO bio | `#ceoBio` | One-line CEO description |
+| CEO LinkedIn button | `#ceoLinkedinBtn` | External LinkedIn CTA |
+| CEO GitHub button | `#ceoGithubBtn` | External GitHub CTA |
+| CEO Medium button | `#ceoMediumBtn` | External Medium CTA |
+| CEO Email button | `#ceoEmailBtn` | Opens default mail app to `as12711@nyu.edu` |
 | Main quote text | `#heroQuote` | "WATCH HOW WE CONTROL THE NARRATIVE" |
 | Author credit | `#heroAuthor` | "— Omar Al-Sudani" |
 | Scroll indicator | `#scrollIndicator` | Down arrow/chevron button |
