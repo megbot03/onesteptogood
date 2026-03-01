@@ -32,32 +32,31 @@ const CONFIG = {
     contentFadeInDelay: 800,
     pageTitle: 'Privacy Policy',
     content: `
-Last updated: December 26, 2025
+Last updated: February 28, 2026
 
-This Privacy Policy describes how One Step to Good ("we," "us," or "our") collects, uses, and discloses your information when you use our website.
+This page explains the basics of how One Step to Good ("we," "us," or "our") handles your information.
 
 Information We Collect
-We collect information you provide directly to us, such as when you subscribe to our newsletter or contact us. We also automatically collect certain information about your device when you use our website.
+We may collect information you choose to share (for example, through forms or email), plus basic usage information like pages visited.
 
 How We Use Your Information
 We use the information we collect to:
 
-- Provide, maintain, and improve our services
-- Send you newsletters and marketing communications (with your consent)
-- Respond to your comments, questions, and requests
-- Analyze how our website is used
+- Run and improve the website
+- Respond to messages and requests
+- Send updates if you opt in
 
 Information Sharing
-We do not sell, trade, or otherwise transfer your personal information to third parties without your consent, except as described in this policy.
+We do not sell your personal information.
 
 Data Security
-We implement appropriate security measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction.
+We take reasonable steps to protect your data, but no system is 100% secure.
 
 Your Rights
-Depending on your location, you may have certain rights regarding your personal information, including the right to access, correct, or delete your data.
+You can request access, updates, or deletion of your personal information by contacting us.
 
 Cookies
-We use cookies and similar technologies to enhance your experience on our website. See our Cookie Policy for more details.
+We use cookies. By using this site, you consent to cookies as described in our Cookie Policy.
 
 Changes to This Privacy Policy
 We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page.

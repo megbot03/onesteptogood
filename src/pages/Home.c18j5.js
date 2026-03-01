@@ -148,7 +148,16 @@ const CEO_PROFILE = {
 
 const MANIFESTO_COPY = {
     line1: 'Our Vision',
-    line2: "Our creations are made to architect narratives that reshape how people think, feel, and act. This is more than a portfolio, it's an intellectual operating system- a unified framework where ideas become impact."
+    line2: "Our creations are made to architect narratives that reshape how people think, feel, and act. This is more than a portfolio, it's a unified framework where ideas become impact."
+};
+
+const DOMAIN_COPY = {
+    think: `THINK
+We combine academics with lived experience, enabling us to create in informed ways that address important issues from a new angle. When those impacted are equipped with resources, a radical transformation occurs.`,
+    create: `CREATE
+Music, film, literature, organizations, software, and beyond. Every medium is a canvas and tool for ideas that matter.`,
+    act: `ACT
+We turn our thoughts into action, building communities and launching initiatives to make a tangible impact.`
 };
 
 // ============================================
@@ -167,7 +176,7 @@ const INTELLECTUAL_PROPERTIES = [
     },
     {
         id: 'software',
-        category: 'SOFTWARE',
+        description: 'A unified vision emerges through One Step to Good'
         title: 'Digital Innovation',
         description: 'Technology solutions engineered to transform workflows and amplify human potential.',
         image: 'wix:image://v1/software-hero.jpg',
@@ -588,6 +597,8 @@ function revealManifesto() {
 // ============================================
 
 function initializeDomainCards() {
+    setDomainCardCopy();
+
     const overlays = ['#thinkOverlay', '#createOverlay', '#actOverlay'];
     
     // Hide overlays initially
@@ -601,6 +612,24 @@ function initializeDomainCards() {
     setupCardHover('#domainThink', '#thinkOverlay');
     setupCardHover('#domainCreate', '#createOverlay');
     setupCardHover('#domainAct', '#actOverlay');
+}
+
+function setDomainCardCopy() {
+    const domainTargets = [
+        { selectors: ['#thinkOverlay', '#domainThinkText', '#thinkText'], text: DOMAIN_COPY.think },
+        { selectors: ['#createOverlay', '#domainCreateText', '#createText'], text: DOMAIN_COPY.create },
+        { selectors: ['#actOverlay', '#domainActText', '#actText'], text: DOMAIN_COPY.act }
+    ];
+
+    domainTargets.forEach(target => {
+        target.selectors.forEach(selector => {
+            try {
+                $w(selector).text = target.text;
+            } catch (e) {
+                // Element may not exist on this layout variant
+            }
+        });
+    });
 }
 
 function setupCardHover(cardSelector, overlaySelector) {
@@ -928,6 +957,10 @@ function initializeFooter() {
 
     // Setup footer links
     try {
+        $w('#termsLink').text = 'Terms';
+        $w('#cookieLink').text = 'Cookies';
+        $w('#privacyLink').text = 'Privacy';
+
         $w('#termsLink').onClick(() => wixLocation.to('/terms-and-conditions'));
         $w('#cookieLink').onClick(() => wixLocation.to('/cookie-policy'));
         $w('#privacyLink').onClick(() => wixLocation.to('/privacy-policy'));

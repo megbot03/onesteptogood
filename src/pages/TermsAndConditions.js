@@ -34,29 +34,25 @@ const CONFIG = {
     content: `
 Last updated: December 26, 2025
 
-1. Acceptance of Terms
-By accessing and using One Step to Good ("we," "us," or "our"), you accept and agree to be bound by the terms and provision of this agreement.
+By using this site, you agree to these basic terms.
 
-2. Use License
-Permission is granted to temporarily download one copy of the materials on One Step to Good for personal, non-commercial transitory viewing only.
+Use of Site
+You may use this website for personal and lawful purposes only.
 
-3. Disclaimer
-The materials on One Step to Good are provided on an 'as is' basis. One Step to Good makes no warranties, expressed or implied, and hereby disclaims and negates all other warranties including without limitation, implied warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement of intellectual property or other violation of rights.
+Content
+All content on this site belongs to One Step to Good unless otherwise noted. Please do not copy or reuse content without permission.
 
-4. Limitations
-In no event shall One Step to Good or its suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out of the use or inability to use the materials on One Step to Good.
+No Guarantees
+This site is provided "as is." We do our best to keep information accurate, but we cannot guarantee it is always complete or up to date.
 
-5. Accuracy of Materials
-The materials appearing on One Step to Good could include technical, typographical, or photographic errors. One Step to Good does not warrant that any of the materials on its website are accurate, complete, or current.
+Liability
+One Step to Good is not responsible for damages resulting from your use of this site.
 
-6. Links
-One Step to Good has not reviewed all of the sites linked to its website and is not responsible for the contents of any such linked site.
+Updates
+We may update these terms at any time. Continued use of the site means you accept any updates.
 
-7. Modifications
-One Step to Good may revise these terms of service for its website at any time without notice. By using this website you are agreeing to be bound by the then current version of these terms of service.
-
-8. Governing Law
-These terms and conditions are governed by and construed in accordance with the laws of [Your Jurisdiction] and you irrevocably submit to the exclusive jurisdiction of the courts in that state or location.
+Contact
+If you have questions about these terms, please contact us.
 `
 };
 

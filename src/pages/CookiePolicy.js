@@ -34,7 +34,9 @@ const CONFIG = {
     content: `
 Last updated: December 26, 2025
 
-This Cookie Policy explains how One Step to Good ("we," "us," or "our") uses cookies and similar technologies on our website.
+By using this site, you consent to cookies and similar technologies used by One Step to Good ("we," "us," or "our").
+
+We use cookies to help the site work, understand traffic, and improve your experience.
 
 What Are Cookies?
 Cookies are small text files that are placed on your computer or mobile device when you visit our website. They allow us to remember your preferences and improve your browsing experience.
