@@ -125,6 +125,7 @@ const CONFIG = {
     
     // IP Showcase rotation interval (ms)
     showcaseInterval: 6000,
+    mediaInterval: 3500,
     
     // Colors from strategy
     colors: {
@@ -168,18 +169,20 @@ const INTELLECTUAL_PROPERTIES = [
     {
         id: 'publications',
         category: 'PUBLICATIONS',
-        title: 'The Strategy of Shadows',
-        description: 'Academic rigor meets lived experience. Thought leadership that challenges conventional narratives.',
+        title: 'The Power of the Pen',
+        description: 'Research, creative writing, analysis pieces. All reshaping discourse.',
         image: 'wix:image://v1/publications-hero.jpg',
+        media: ['wix:image://v1/publications-hero.jpg'],
         link: '/publications',
         accentColor: OSG_BRAND.colors.accent
     },
     {
         id: 'software',
-        description: 'A unified vision emerges through One Step to Good'
+        category: 'SOFTWARE',
         title: 'Digital Innovation',
-        description: 'Technology solutions engineered to transform workflows and amplify human potential.',
+        description: 'Technology solutions engineered to transform workflows, address community needs, and amplify human potential.',
         image: 'wix:image://v1/software-hero.jpg',
+        media: ['wix:image://v1/software-hero.jpg'],
         link: '/software',
         accentColor: OSG_BRAND.colors.accentAlt
     },
@@ -187,17 +190,19 @@ const INTELLECTUAL_PROPERTIES = [
         id: 'childrens-book',
         category: 'CHILDREN\'S BOOK',
         title: 'Stories That Shape Tomorrow',
-        description: 'Imagination meets wisdom. Crafted tales that plant seeds of curiosity and courage.',
+        description: 'Crafted tales that plant seeds of virtue, curiosity, and courageous representation in young minds.',
         image: 'wix:image://v1/childrens-book-hero.jpg',
+        media: ['wix:image://v1/childrens-book-hero.jpg'],
         link: '/childrens-book',
         accentColor: '#d4a574'
     },
     {
         id: 'music',
         category: 'MUSIC',
-        title: 'Sonic Landscapes',
-        description: 'Sound as expression. Compositions that move between worlds and break boundaries.',
+        title: 'Transformation in Music',
+        description: 'Songs that explore themes of lived struggles, overcoming, and turning towards transformation. Words from the soul that transport, connect, and encourage listeners.',
         image: 'wix:image://v1/music-hero.jpg',
+        media: ['wix:image://v1/music-hero.jpg'],
         link: '/music',
         accentColor: '#7c6aef'
     },
@@ -205,8 +210,9 @@ const INTELLECTUAL_PROPERTIES = [
         id: 'film',
         category: 'FILM',
         title: 'Visual Narratives',
-        description: 'Stories captured in motion. Documentaries and productions that reveal hidden truths.',
+        description: 'Stories captured in motion. Documentaries and productions that reveal hidden truths and spark conversation.',
         image: 'wix:image://v1/film-hero.jpg',
+        media: ['wix:image://v1/film-hero.jpg'],
         link: '/film',
         accentColor: '#e85d75'
     },
@@ -214,8 +220,9 @@ const INTELLECTUAL_PROPERTIES = [
         id: 'social-media',
         category: 'SOCIAL MEDIA',
         title: 'Digital Presence',
-        description: 'Authentic engagement across platforms. Building communities that matter.',
+        description: 'In addition to our real-world presence, we engage authentically across platforms, building communities, sharing our work, and having conversations that resonate.',
         image: 'wix:image://v1/social-hero.jpg',
+        media: ['wix:image://v1/social-hero.jpg'],
         link: '/social',
         accentColor: '#4ecdc4'
     }
@@ -283,6 +290,8 @@ let featuredAnimated = false;
 // Showcase controller reference
 let showcaseController = null;
 let journeyController = null;
+let mediaRotationTimer = null;
+let mediaRotationIndex = 0;
 
 // ============================================
 // INITIALIZATION
@@ -732,6 +741,8 @@ function initializeIPShowcase() {
             try {
                 $w('#ipShowcaseCTA').link = item.link;
             } catch (e) {}
+
+            startMediaRotationForItem(item);
         }
     });
     
@@ -758,6 +769,7 @@ function setupShowcaseNavigation() {
             if (showcaseController) {
                 showcaseController.stop();
             }
+            stopMediaRotation();
         });
         
         $w('#ipShowcaseSection').onMouseOut(() => {
@@ -793,6 +805,44 @@ function revealIPShowcase() {
     } catch (e) {
         console.log('IP Showcase reveal error:', e);
     }
+}
+
+function startMediaRotationForItem(item) {
+    stopMediaRotation();
+
+    const mediaItems = (item && item.media && item.media.length) ? item.media : (item && item.image ? [item.image] : []);
+    if (!mediaItems.length) {
+        return;
+    }
+
+    mediaRotationIndex = 0;
+    renderShowcaseMedia(mediaItems[mediaRotationIndex]);
+
+    if (mediaItems.length <= 1) {
+        return;
+    }
+
+    mediaRotationTimer = setInterval(() => {
+        mediaRotationIndex = (mediaRotationIndex + 1) % mediaItems.length;
+        renderShowcaseMedia(mediaItems[mediaRotationIndex]);
+    }, CONFIG.mediaInterval);
+}
+
+function stopMediaRotation() {
+    if (mediaRotationTimer) {
+        clearInterval(mediaRotationTimer);
+        mediaRotationTimer = null;
+    }
+}
+
+function renderShowcaseMedia(mediaSrc) {
+    if (!mediaSrc) {
+        return;
+    }
+
+    try {
+        $w('#ipShowcaseImage').src = mediaSrc;
+    } catch (e) {}
 }
 
 // ============================================
