@@ -103,6 +103,13 @@ const CONFIG = {
     heroRevealDelay: 500,
     heroQuoteTypingSpeed: 50,
     heroAuthorFadeDelay: 2000,
+    ceoTextRevealDuration: 700,
+    ceoTextStaggerDelay: 140,
+    ceoToButtonsDelay: 520,
+    ceoButtonsRevealDuration: 500,
+    ceoButtonsStaggerDelay: 90,
+    buttonsToScrollDelay: 650,
+    scrollToQuoteDelay: 900,
     sectionRevealDuration: 800,
     cardHoverDuration: 300,
     
@@ -137,6 +144,11 @@ const CEO_PROFILE = {
         medium: 'https://aunraystanford.medium.com/',
         email: 'mailto:as12711@nyu.edu'
     }
+};
+
+const MANIFESTO_COPY = {
+    line1: 'Our Vision',
+    line2: "Our creations are made to architect narratives that reshape how people think, feel, and act. This is more than a portfolio, it's an intellectual operating system- a unified framework where ideas become impact."
 };
 
 // ============================================
@@ -274,6 +286,7 @@ $w.onReady(function () {
     adjustForMobile();
     
     // Initialize all sections
+    setManifestoCopy();
     initializeHero();
     initializeCEOButtons();
     initializeScrollAnimations();
@@ -290,6 +303,15 @@ $w.onReady(function () {
     // Set up magnetic hover effects on CTAs
     setupPremiumInteractions();
 });
+
+function setManifestoCopy() {
+    try {
+        $w('#manifestoLine1').text = MANIFESTO_COPY.line1;
+        $w('#manifestoLine2').text = MANIFESTO_COPY.line2;
+    } catch (e) {
+        console.log('Manifesto text elements not found');
+    }
+}
 
 // ============================================
 // HERO SECTION - Animated Text Reveal
@@ -328,24 +350,24 @@ function animateCEOIntro() {
     }
 
     revealTextLines(['#ceoSectionLabel', '#ceoName', '#ceoBio'], {
-        duration: 650,
-        staggerDelay: 120,
+        duration: CONFIG.ceoTextRevealDuration,
+        staggerDelay: CONFIG.ceoTextStaggerDelay,
         direction: 'left'
     });
 
     setTimeout(() => {
         try {
             revealTextLines(['#ceoLinkedinBtn', '#ceoGithubBtn', '#ceoMediumBtn', '#ceoEmailBtn'], {
-                duration: 450,
-                staggerDelay: 80,
+                duration: CONFIG.ceoButtonsRevealDuration,
+                staggerDelay: CONFIG.ceoButtonsStaggerDelay,
                 direction: 'up'
             });
         } catch (e) {
             console.log('Some CEO CTA buttons not found');
         }
 
-        setTimeout(animateScrollIndicator, 450);
-    }, 450);
+        setTimeout(animateScrollIndicator, CONFIG.buttonsToScrollDelay);
+    }, CONFIG.ceoToButtonsDelay);
 }
 
 /**
@@ -431,7 +453,7 @@ function animateScrollIndicator() {
         timeline.play();
 
         // Reveal quote after indicator to keep CEO intro above scroll icon
-        setTimeout(animateHeroQuote, 550);
+        setTimeout(animateHeroQuote, CONFIG.scrollToQuoteDelay);
         
         // Click handler for smooth scroll
         indicator.onClick(() => {
@@ -970,7 +992,14 @@ function isMobile() {
 function adjustForMobile() {
     if (isMobile()) {
         // Reduce animation complexity on mobile
-        CONFIG.heroQuoteTypingSpeed = 30;
+        CONFIG.heroQuoteTypingSpeed = 32;
+        CONFIG.ceoTextRevealDuration = 520;
+        CONFIG.ceoTextStaggerDelay = 110;
+        CONFIG.ceoToButtonsDelay = 360;
+        CONFIG.ceoButtonsRevealDuration = 380;
+        CONFIG.ceoButtonsStaggerDelay = 70;
+        CONFIG.buttonsToScrollDelay = 420;
+        CONFIG.scrollToQuoteDelay = 650;
         CONFIG.sectionRevealDuration = 500;
         CONFIG.showcaseInterval = 8000; // Longer interval on mobile
         
