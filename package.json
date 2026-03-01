@@ -8,6 +8,9 @@
   "scripts": {
     "postinstall": "wix sync-types",
     "dev": "wix dev",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "handoff-notes": "node scripts/handoff-notes.js",
+    "vercel-readiness": "node scripts/vercel-readiness.js",
+    "do-it": "npm run vercel-readiness"
   }
 }

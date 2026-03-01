@@ -54,7 +54,7 @@
  * - #milestone1Year       : Year text (e.g., "2018")
  * - #milestone1Title      : Milestone title
  * - #milestone1Desc       : Milestone description
- * - #milestone2-6         : Additional milestones (same structure)
+ * - #milestone2-8         : Additional milestones (same structure)
  * 
  * STATS SECTION (NEW):
  * - #statsSection         : Container for animated statistics
@@ -82,6 +82,7 @@
 import wixAnimations from 'wix-animations';
 import wixWindow from 'wix-window';
 import wixLocation from 'wix-location';
+import { JOURNEY_MILESTONES } from 'public/journeyTimelineData.js';
 import { 
     createRotatingShowcase,
     initializeJourneyTimeline,
@@ -228,43 +229,6 @@ const INTELLECTUAL_PROPERTIES = [
         media: ['wix:image://v1/social-hero.jpg'],
         link: '/social',
         accentColor: '#4ecdc4'
-    }
-];
-
-// ============================================
-// JOURNEY MILESTONES DATA
-// ============================================
-
-const JOURNEY_MILESTONES = [
-    {
-        year: '2016',
-        title: 'The Foundation',
-        description: 'First steps into public discourse and intellectual exploration'
-    },
-    {
-        year: '2018',
-        title: 'Published Voice',
-        description: 'Debut publication reaches audiences across digital platforms'
-    },
-    {
-        year: '2020',
-        title: 'Digital Evolution',
-        description: 'Software development begins, merging technology with vision'
-    },
-    {
-        year: '2022',
-        title: 'Creative Expansion',
-        description: 'Music and film projects launch, diversifying the creative portfolio'
-    },
-    {
-        year: '2023',
-        title: 'For the Next Generation',
-        description: 'Children\'s book published, extending influence to young minds'
-    },
-    {
-        year: '2024',
-        title: 'One Step to Good',
-        description: 'The intellectual operating system emerges as a unified vision'
     }
 ];
 
@@ -946,6 +910,8 @@ function animateShowcaseEditorialMotion() {
 // ============================================
 
 function initializeJourney() {
+    setJourneyMilestoneCopy(JOURNEY_MILESTONES);
+
     journeyController = initializeJourneyTimeline({
         milestones: JOURNEY_MILESTONES,
         containerSelector: '#journeySection',
@@ -953,6 +919,27 @@ function initializeJourney() {
         milestonePrefix: '#milestone',
         animateOnScroll: false // We'll trigger it manually
     });
+}
+
+function setJourneyMilestoneCopy(milestones) {
+    const missingFields = [];
+
+    milestones.forEach((milestone, index) => {
+        const markerNumber = index + 1;
+
+        try {
+            $w(`#milestone${markerNumber}Year`).text = milestone.year;
+            $w(`#milestone${markerNumber}Title`).text = milestone.title;
+            $w(`#milestone${markerNumber}Desc`).text = milestone.description;
+        } catch (e) {
+            missingFields.push(markerNumber);
+        }
+    });
+
+    if (missingFields.length > 0) {
+        const uniqueMissing = [...new Set(missingFields)];
+        console.warn(`Journey timeline is missing Wix marker IDs for: ${uniqueMissing.map(number => `milestone${number}`).join(', ')}.`);
+    }
 }
 
 function revealJourney() {
