@@ -125,7 +125,10 @@ const CONFIG = {
     
     // IP Showcase rotation interval (ms)
     showcaseInterval: 6000,
-    mediaInterval: 3500,
+    mediaInterval: 4500,
+    mediaTransitionDuration: 220,
+    showcaseTextStagger: 90,
+    showcaseImageDriftDuration: 1400,
     
     // Colors from strategy
     colors: {
@@ -292,6 +295,8 @@ let showcaseController = null;
 let journeyController = null;
 let mediaRotationTimer = null;
 let mediaRotationIndex = 0;
+let activeMediaItemId = null;
+let mediaTransitionInProgress = false;
 
 // ============================================
 // INITIALIZATION
@@ -743,6 +748,7 @@ function initializeIPShowcase() {
             } catch (e) {}
 
             startMediaRotationForItem(item);
+            animateShowcaseEditorialMotion();
         }
     });
     
@@ -812,19 +818,29 @@ function startMediaRotationForItem(item) {
 
     const mediaItems = (item && item.media && item.media.length) ? item.media : (item && item.image ? [item.image] : []);
     if (!mediaItems.length) {
+        activeMediaItemId = null;
         return;
     }
 
-    mediaRotationIndex = 0;
-    renderShowcaseMedia(mediaItems[mediaRotationIndex]);
+    const isSameItem = item.id === activeMediaItemId;
+    if (!isSameItem || mediaRotationIndex >= mediaItems.length) {
+        mediaRotationIndex = 0;
+    }
+
+    activeMediaItemId = item.id;
+    renderShowcaseMedia(mediaItems[mediaRotationIndex], false);
 
     if (mediaItems.length <= 1) {
         return;
     }
 
     mediaRotationTimer = setInterval(() => {
+        if (mediaTransitionInProgress) {
+            return;
+        }
+
         mediaRotationIndex = (mediaRotationIndex + 1) % mediaItems.length;
-        renderShowcaseMedia(mediaItems[mediaRotationIndex]);
+        renderShowcaseMedia(mediaItems[mediaRotationIndex], true);
     }, CONFIG.mediaInterval);
 }
 
@@ -835,14 +851,94 @@ function stopMediaRotation() {
     }
 }
 
-function renderShowcaseMedia(mediaSrc) {
+function renderShowcaseMedia(mediaSrc, animate = true) {
     if (!mediaSrc) {
         return;
     }
 
     try {
-        $w('#ipShowcaseImage').src = mediaSrc;
+        const imageElement = $w('#ipShowcaseImage');
+
+        if (!animate) {
+            imageElement.src = mediaSrc;
+            return;
+        }
+
+        mediaTransitionInProgress = true;
+
+        wixAnimations.timeline()
+            .add(imageElement, {
+                opacity: 0,
+                duration: CONFIG.mediaTransitionDuration,
+                easing: 'easeInQuad'
+            })
+            .play()
+            .then(() => {
+                imageElement.src = mediaSrc;
+
+                return wixAnimations.timeline()
+                    .add(imageElement, {
+                        opacity: 1,
+                        scale: 1.015,
+                        duration: CONFIG.mediaTransitionDuration,
+                        easing: 'easeOutQuad'
+                    })
+                    .add(imageElement, {
+                        scale: 1,
+                        duration: CONFIG.showcaseImageDriftDuration,
+                        easing: 'easeOutCubic'
+                    })
+                    .play();
+            })
+            .finally(() => {
+                mediaTransitionInProgress = false;
+            });
     } catch (e) {}
+}
+
+function animateShowcaseEditorialMotion() {
+    const textSelectors = [
+        '#ipShowcaseCategory',
+        '#ipShowcaseTitle',
+        '#ipShowcaseDesc',
+        '#ipShowcaseIndicator'
+    ];
+
+    const timeline = wixAnimations.timeline();
+
+    textSelectors.forEach((selector, index) => {
+        try {
+            const element = $w(selector);
+            timeline
+                .add(element, {
+                    x: -10,
+                    opacity: 0,
+                    duration: 0
+                }, index * CONFIG.showcaseTextStagger)
+                .add(element, {
+                    x: 0,
+                    opacity: 1,
+                    duration: 420,
+                    easing: 'easeOutCubic'
+                }, index * CONFIG.showcaseTextStagger);
+        } catch (e) {
+            // Skip missing element variants
+        }
+    });
+
+    try {
+        const cta = $w('#ipShowcaseCTA');
+        timeline
+            .add(cta, { opacity: 0, y: 8, duration: 0 }, textSelectors.length * CONFIG.showcaseTextStagger)
+            .add(cta, {
+                opacity: 1,
+                y: 0,
+                duration: 360,
+                easing: 'easeOutCubic'
+            }, textSelectors.length * CONFIG.showcaseTextStagger);
+    } catch (e) {}
+
+    timeline.play();
 }
 
 // ============================================
@@ -1085,6 +1181,10 @@ function adjustForMobile() {
         CONFIG.scrollToQuoteDelay = 650;
         CONFIG.sectionRevealDuration = 500;
         CONFIG.showcaseInterval = 8000; // Longer interval on mobile
+        CONFIG.mediaInterval = 5500;
+        CONFIG.mediaTransitionDuration = 180;
+        CONFIG.showcaseTextStagger = 70;
+        CONFIG.showcaseImageDriftDuration = 1100;
         
         // Adjust scroll triggers for mobile (less scrolling needed)
         CONFIG.scrollTriggers = {
