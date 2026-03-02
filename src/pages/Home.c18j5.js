@@ -54,7 +54,7 @@
  * - #milestone1Year       : Year text (e.g., "2018")
  * - #milestone1Title      : Milestone title
  * - #milestone1Desc       : Milestone description
- * - #milestone2-6         : Additional milestones (same structure)
+ * - #milestone2-8         : Additional milestones (same structure)
  * 
  * STATS SECTION (NEW):
  * - #statsSection         : Container for animated statistics
@@ -82,6 +82,7 @@
 import wixAnimations from 'wix-animations';
 import wixWindow from 'wix-window';
 import wixLocation from 'wix-location';
+import { JOURNEY_MILESTONES } from 'public/journeyTimelineData.js';
 import { 
     createRotatingShowcase,
     initializeJourneyTimeline,
@@ -125,6 +126,10 @@ const CONFIG = {
     
     // IP Showcase rotation interval (ms)
     showcaseInterval: 6000,
+    mediaInterval: 4500,
+    mediaTransitionDuration: 220,
+    showcaseTextStagger: 90,
+    showcaseImageDriftDuration: 1400,
     
     // Colors from strategy
     colors: {
@@ -148,7 +153,16 @@ const CEO_PROFILE = {
 
 const MANIFESTO_COPY = {
     line1: 'Our Vision',
-    line2: "Our creations are made to architect narratives that reshape how people think, feel, and act. This is more than a portfolio, it's an intellectual operating system- a unified framework where ideas become impact."
+    line2: "Our creations are made to architect narratives that reshape how people think, feel, and act. This is more than a portfolio, it's a unified framework where ideas become impact."
+};
+
+const DOMAIN_COPY = {
+    think: `THINK
+We combine academics with lived experience, enabling us to create in informed ways that address important issues from a new angle. When those impacted are equipped with resources, a radical transformation occurs.`,
+    create: `CREATE
+Music, film, literature, organizations, software, and beyond. Every medium is a canvas and tool for ideas that matter.`,
+    act: `ACT
+We turn our thoughts into action, building communities and launching initiatives to make a tangible impact.`
 };
 
 // ============================================
@@ -159,9 +173,10 @@ const INTELLECTUAL_PROPERTIES = [
     {
         id: 'publications',
         category: 'PUBLICATIONS',
-        title: 'The Strategy of Shadows',
-        description: 'Academic rigor meets lived experience. Thought leadership that challenges conventional narratives.',
+        title: 'The Power of the Pen',
+        description: 'Research, creative writing, analysis pieces. All reshaping discourse.',
         image: 'wix:image://v1/publications-hero.jpg',
+        media: ['wix:image://v1/publications-hero.jpg'],
         link: '/publications',
         accentColor: OSG_BRAND.colors.accent
     },
@@ -169,8 +184,9 @@ const INTELLECTUAL_PROPERTIES = [
         id: 'software',
         category: 'SOFTWARE',
         title: 'Digital Innovation',
-        description: 'Technology solutions engineered to transform workflows and amplify human potential.',
+        description: 'Technology solutions engineered to transform workflows, address community needs, and amplify human potential.',
         image: 'wix:image://v1/software-hero.jpg',
+        media: ['wix:image://v1/software-hero.jpg'],
         link: '/software',
         accentColor: OSG_BRAND.colors.accentAlt
     },
@@ -178,17 +194,19 @@ const INTELLECTUAL_PROPERTIES = [
         id: 'childrens-book',
         category: 'CHILDREN\'S BOOK',
         title: 'Stories That Shape Tomorrow',
-        description: 'Imagination meets wisdom. Crafted tales that plant seeds of curiosity and courage.',
+        description: 'Crafted tales that plant seeds of virtue, curiosity, and courageous representation in young minds.',
         image: 'wix:image://v1/childrens-book-hero.jpg',
+        media: ['wix:image://v1/childrens-book-hero.jpg'],
         link: '/childrens-book',
         accentColor: '#d4a574'
     },
     {
         id: 'music',
         category: 'MUSIC',
-        title: 'Sonic Landscapes',
-        description: 'Sound as expression. Compositions that move between worlds and break boundaries.',
+        title: 'Transformation in Music',
+        description: 'Songs that explore themes of lived struggles, overcoming, and turning towards transformation. Words from the soul that transport, connect, and encourage listeners.',
         image: 'wix:image://v1/music-hero.jpg',
+        media: ['wix:image://v1/music-hero.jpg'],
         link: '/music',
         accentColor: '#7c6aef'
     },
@@ -196,8 +214,9 @@ const INTELLECTUAL_PROPERTIES = [
         id: 'film',
         category: 'FILM',
         title: 'Visual Narratives',
-        description: 'Stories captured in motion. Documentaries and productions that reveal hidden truths.',
+        description: 'Stories captured in motion. Documentaries and productions that reveal hidden truths and spark conversation.',
         image: 'wix:image://v1/film-hero.jpg',
+        media: ['wix:image://v1/film-hero.jpg'],
         link: '/film',
         accentColor: '#e85d75'
     },
@@ -205,47 +224,11 @@ const INTELLECTUAL_PROPERTIES = [
         id: 'social-media',
         category: 'SOCIAL MEDIA',
         title: 'Digital Presence',
-        description: 'Authentic engagement across platforms. Building communities that matter.',
+        description: 'In addition to our real-world presence, we engage authentically across platforms, building communities, sharing our work, and having conversations that resonate.',
         image: 'wix:image://v1/social-hero.jpg',
+        media: ['wix:image://v1/social-hero.jpg'],
         link: '/social',
         accentColor: '#4ecdc4'
-    }
-];
-
-// ============================================
-// JOURNEY MILESTONES DATA
-// ============================================
-
-const JOURNEY_MILESTONES = [
-    {
-        year: '2016',
-        title: 'The Foundation',
-        description: 'First steps into public discourse and intellectual exploration'
-    },
-    {
-        year: '2018',
-        title: 'Published Voice',
-        description: 'Debut publication reaches audiences across digital platforms'
-    },
-    {
-        year: '2020',
-        title: 'Digital Evolution',
-        description: 'Software development begins, merging technology with vision'
-    },
-    {
-        year: '2022',
-        title: 'Creative Expansion',
-        description: 'Music and film projects launch, diversifying the creative portfolio'
-    },
-    {
-        year: '2023',
-        title: 'For the Next Generation',
-        description: 'Children\'s book published, extending influence to young minds'
-    },
-    {
-        year: '2024',
-        title: 'One Step to Good',
-        description: 'The intellectual operating system emerges as a unified vision'
     }
 ];
 
@@ -274,6 +257,10 @@ let featuredAnimated = false;
 // Showcase controller reference
 let showcaseController = null;
 let journeyController = null;
+let mediaRotationTimer = null;
+let mediaRotationIndex = 0;
+let activeMediaItemId = null;
+let mediaTransitionInProgress = false;
 
 // ============================================
 // INITIALIZATION
@@ -588,6 +575,8 @@ function revealManifesto() {
 // ============================================
 
 function initializeDomainCards() {
+    setDomainCardCopy();
+
     const overlays = ['#thinkOverlay', '#createOverlay', '#actOverlay'];
     
     // Hide overlays initially
@@ -601,6 +590,24 @@ function initializeDomainCards() {
     setupCardHover('#domainThink', '#thinkOverlay');
     setupCardHover('#domainCreate', '#createOverlay');
     setupCardHover('#domainAct', '#actOverlay');
+}
+
+function setDomainCardCopy() {
+    const domainTargets = [
+        { selectors: ['#thinkOverlay', '#domainThinkText', '#thinkText'], text: DOMAIN_COPY.think },
+        { selectors: ['#createOverlay', '#domainCreateText', '#createText'], text: DOMAIN_COPY.create },
+        { selectors: ['#actOverlay', '#domainActText', '#actText'], text: DOMAIN_COPY.act }
+    ];
+
+    domainTargets.forEach(target => {
+        target.selectors.forEach(selector => {
+            try {
+                $w(selector).text = target.text;
+            } catch (e) {
+                // Element may not exist on this layout variant
+            }
+        });
+    });
 }
 
 function setupCardHover(cardSelector, overlaySelector) {
@@ -703,6 +710,9 @@ function initializeIPShowcase() {
             try {
                 $w('#ipShowcaseCTA').link = item.link;
             } catch (e) {}
+
+            startMediaRotationForItem(item);
+            animateShowcaseEditorialMotion();
         }
     });
     
@@ -729,6 +739,7 @@ function setupShowcaseNavigation() {
             if (showcaseController) {
                 showcaseController.stop();
             }
+            stopMediaRotation();
         });
         
         $w('#ipShowcaseSection').onMouseOut(() => {
@@ -766,11 +777,141 @@ function revealIPShowcase() {
     }
 }
 
+function startMediaRotationForItem(item) {
+    stopMediaRotation();
+
+    const mediaItems = (item && item.media && item.media.length) ? item.media : (item && item.image ? [item.image] : []);
+    if (!mediaItems.length) {
+        activeMediaItemId = null;
+        return;
+    }
+
+    const isSameItem = item.id === activeMediaItemId;
+    if (!isSameItem || mediaRotationIndex >= mediaItems.length) {
+        mediaRotationIndex = 0;
+    }
+
+    activeMediaItemId = item.id;
+    renderShowcaseMedia(mediaItems[mediaRotationIndex], false);
+
+    if (mediaItems.length <= 1) {
+        return;
+    }
+
+    mediaRotationTimer = setInterval(() => {
+        if (mediaTransitionInProgress) {
+            return;
+        }
+
+        mediaRotationIndex = (mediaRotationIndex + 1) % mediaItems.length;
+        renderShowcaseMedia(mediaItems[mediaRotationIndex], true);
+    }, CONFIG.mediaInterval);
+}
+
+function stopMediaRotation() {
+    if (mediaRotationTimer) {
+        clearInterval(mediaRotationTimer);
+        mediaRotationTimer = null;
+    }
+}
+
+function renderShowcaseMedia(mediaSrc, animate = true) {
+    if (!mediaSrc) {
+        return;
+    }
+
+    try {
+        const imageElement = $w('#ipShowcaseImage');
+
+        if (!animate) {
+            imageElement.src = mediaSrc;
+            return;
+        }
+
+        mediaTransitionInProgress = true;
+
+        wixAnimations.timeline()
+            .add(imageElement, {
+                opacity: 0,
+                duration: CONFIG.mediaTransitionDuration,
+                easing: 'easeInQuad'
+            })
+            .play()
+            .then(() => {
+                imageElement.src = mediaSrc;
+
+                return wixAnimations.timeline()
+                    .add(imageElement, {
+                        opacity: 1,
+                        scale: 1.015,
+                        duration: CONFIG.mediaTransitionDuration,
+                        easing: 'easeOutQuad'
+                    })
+                    .add(imageElement, {
+                        scale: 1,
+                        duration: CONFIG.showcaseImageDriftDuration,
+                        easing: 'easeOutCubic'
+                    })
+                    .play();
+            })
+            .finally(() => {
+                mediaTransitionInProgress = false;
+            });
+    } catch (e) {}
+}
+
+function animateShowcaseEditorialMotion() {
+    const textSelectors = [
+        '#ipShowcaseCategory',
+        '#ipShowcaseTitle',
+        '#ipShowcaseDesc',
+        '#ipShowcaseIndicator'
+    ];
+
+    const timeline = wixAnimations.timeline();
+
+    textSelectors.forEach((selector, index) => {
+        try {
+            const element = $w(selector);
+            timeline
+                .add(element, {
+                    x: -10,
+                    opacity: 0,
+                    duration: 0
+                }, index * CONFIG.showcaseTextStagger)
+                .add(element, {
+                    x: 0,
+                    opacity: 1,
+                    duration: 420,
+                    easing: 'easeOutCubic'
+                }, index * CONFIG.showcaseTextStagger);
+        } catch (e) {
+            // Skip missing element variants
+        }
+    });
+
+    try {
+        const cta = $w('#ipShowcaseCTA');
+        timeline
+            .add(cta, { opacity: 0, y: 8, duration: 0 }, textSelectors.length * CONFIG.showcaseTextStagger)
+            .add(cta, {
+                opacity: 1,
+                y: 0,
+                duration: 360,
+                easing: 'easeOutCubic'
+            }, textSelectors.length * CONFIG.showcaseTextStagger);
+    } catch (e) {}
+
+    timeline.play();
+}
+
 // ============================================
 // JOURNEY TIMELINE
 // ============================================
 
 function initializeJourney() {
+    setJourneyMilestoneCopy(JOURNEY_MILESTONES);
+
     journeyController = initializeJourneyTimeline({
         milestones: JOURNEY_MILESTONES,
         containerSelector: '#journeySection',
@@ -778,6 +919,27 @@ function initializeJourney() {
         milestonePrefix: '#milestone',
         animateOnScroll: false // We'll trigger it manually
     });
+}
+
+function setJourneyMilestoneCopy(milestones) {
+    const missingFields = [];
+
+    milestones.forEach((milestone, index) => {
+        const markerNumber = index + 1;
+
+        try {
+            $w(`#milestone${markerNumber}Year`).text = milestone.year;
+            $w(`#milestone${markerNumber}Title`).text = milestone.title;
+            $w(`#milestone${markerNumber}Desc`).text = milestone.description;
+        } catch (e) {
+            missingFields.push(markerNumber);
+        }
+    });
+
+    if (missingFields.length > 0) {
+        const uniqueMissing = [...new Set(missingFields)];
+        console.warn(`Journey timeline is missing Wix marker IDs for: ${uniqueMissing.map(number => `milestone${number}`).join(', ')}.`);
+    }
 }
 
 function revealJourney() {
@@ -928,6 +1090,10 @@ function initializeFooter() {
 
     // Setup footer links
     try {
+        $w('#termsLink').text = 'Terms';
+        $w('#cookieLink').text = 'Cookies';
+        $w('#privacyLink').text = 'Privacy';
+
         $w('#termsLink').onClick(() => wixLocation.to('/terms-and-conditions'));
         $w('#cookieLink').onClick(() => wixLocation.to('/cookie-policy'));
         $w('#privacyLink').onClick(() => wixLocation.to('/privacy-policy'));
@@ -1002,6 +1168,10 @@ function adjustForMobile() {
         CONFIG.scrollToQuoteDelay = 650;
         CONFIG.sectionRevealDuration = 500;
         CONFIG.showcaseInterval = 8000; // Longer interval on mobile
+        CONFIG.mediaInterval = 5500;
+        CONFIG.mediaTransitionDuration = 180;
+        CONFIG.showcaseTextStagger = 70;
+        CONFIG.showcaseImageDriftDuration = 1100;
         
         // Adjust scroll triggers for mobile (less scrolling needed)
         CONFIG.scrollTriggers = {
