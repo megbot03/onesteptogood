@@ -59,16 +59,7 @@ export default function Hero() {
         }}
       />
 
-      <div className="relative z-10 text-center px-6 max-w-5xl">
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="text-[#c45a32] uppercase tracking-[0.3em] text-sm mb-8 font-medium"
-        >
-          The Intellectual Operating System
-        </motion.p>
-
+      <div className="relative z-10 text-center px-6 max-w-5xl -mt-8 md:-mt-12">
         <h1
           className="font-[family-name:var(--font-display)] text-[clamp(2rem,6vw,5rem)] font-bold tracking-tight leading-[1.1] mb-8"
         >
