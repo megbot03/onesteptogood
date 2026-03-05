@@ -1,0 +1,331 @@
+@import "tailwindcss";
+
+/* ============================================
+   ONE STEP TO GOOD - Brand System
+   "The Intellectual Operating System"
+   ============================================ */
+
+:root {
+  /* Core Brand Colors */
+  --osg-dark: #0d0d0d;
+  --osg-darker: #080808;
+  --osg-light: #f5f2ed;
+  --osg-cream: #ebe6dc;
+  --osg-accent: #c45a32;
+  --osg-accent-glow: #e8734a;
+  --osg-teal: #1d7a8c;
+  --osg-muted: #6b6b6b;
+ 
+  /* Typography */
+  --font-display: 'Outfit', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+ 
+  /* Spacing */
+  --section-padding: clamp(4rem, 10vh, 8rem);
+ 
+  /* Transitions */
+  --transition-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@theme inline {
+  --color-background: var(--osg-dark);
+  --color-foreground: var(--osg-light);
+  --color-accent: var(--osg-accent);
+  --font-sans: var(--font-body);
+}
+
+/* ============================================
+   Base Styles
+   ============================================ */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--osg-dark);
+  color: var(--osg-light);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+/* Selection */
+::selection {
+  background: var(--osg-accent);
+  color: var(--osg-dark);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--osg-darker);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--osg-accent);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--osg-accent-glow);
+}
+
+/* ============================================
+   Typography
+   ============================================ */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.display-heading {
+  font-size: clamp(2.5rem, 8vw, 6rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+}
+
+.section-heading {
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.body-large {
+  font-size: clamp(1.1rem, 2vw, 1.35rem);
+  line-height: 1.7;
+  color: var(--osg-cream);
+}
+
+/* ============================================
+   Accent Line / Decorative Elements
+   ============================================ */
+
+.accent-line {
+  width: 60px;
+  height: 3px;
+  background: var(--osg-accent);
+  margin: 1.5rem 0;
+}
+
+.accent-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--osg-accent);
+  border-radius: 50%;
+}
+
+/* ============================================
+   Buttons
+   ============================================ */
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 2rem;
+  background: var(--osg-accent);
+  color: var(--osg-light);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.9rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s var(--transition-smooth);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.5s;
+}
+
+.btn-primary:hover {
+  background: var(--osg-accent-glow);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(196, 90, 50, 0.3);
+}
+
+.btn-primary:hover::before {
+  left: 100%;
+}
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 2rem;
+  background: transparent;
+  color: var(--osg-light);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.9rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: 2px solid var(--osg-light);
+  cursor: pointer;
+  transition: all 0.3s var(--transition-smooth);
+}
+
+.btn-outline:hover {
+  background: var(--osg-light);
+  color: var(--osg-dark);
+  transform: translateY(-2px);
+}
+
+/* ============================================
+   Cards
+   ============================================ */
+
+.card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 2rem;
+  transition: all 0.4s var(--transition-smooth);
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: var(--osg-accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s var(--transition-smooth);
+}
+
+.card:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(196, 90, 50, 0.3);
+  transform: translateY(-8px);
+}
+
+.card:hover::before {
+  transform: scaleX(1);
+}
+
+/* ============================================
+   Animations
+   ============================================ */
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(196, 90, 50, 0.3); }
+  50% { box-shadow: 0 0 40px rgba(196, 90, 50, 0.6); }
+}
+
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes line-grow {
+  from { transform: scaleY(0); }
+  to { transform: scaleY(1); }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* ============================================
+   Gradient Text
+   ============================================ */
+
+.gradient-text {
+  background: linear-gradient(135deg, var(--osg-light) 0%, var(--osg-accent) 50%, var(--osg-teal) 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradient-shift 5s ease infinite;
+}
+
+/* ============================================
+   Section Backgrounds
+   ============================================ */
+
+.section-dark {
+  background: var(--osg-dark);
+}
+
+.section-darker {
+  background: var(--osg-darker);
+}
+
+.section-gradient {
+  background: linear-gradient(180deg, var(--osg-dark) 0%, var(--osg-darker) 100%);
+}
+
+/* Noise Overlay */
+.noise-overlay::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  opacity: 0.03;
+  pointer-events: none;
+}
+
+/* ============================================
+   Utility Classes
+   ============================================ */
+
+.container-narrow {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.container-wide {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.text-accent {
+  color: var(--osg-accent);
+}
+
+.text-muted {
+  color: var(--osg-muted);
+}
+
+.border-accent {
+  border-color: var(--osg-accent);
+}

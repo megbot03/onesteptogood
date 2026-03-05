@@ -1,17 +1,27 @@
 {
-  "devDependencies": {
-    "@wix/cli": "^1.0.0",
-    "@wix/eslint-plugin-cli": "^1.0.0",
-    "eslint": "^8.25.0",
-    "react": "16.14.0"
-  },
+  "name": "onesteptogood-new",
+  "version": "0.1.0",
+  "private": true,
   "scripts": {
-    "postinstall": "node -e \"if (!process.env.CI && !process.env.VERCEL) require('child_process').execSync('wix sync-types', { stdio: 'inherit' })\"",
-    "sync-types": "wix sync-types",
-    "dev": "wix dev",
-    "lint": "eslint .",
-    "handoff-notes": "node scripts/handoff-notes.js",
-    "vercel-readiness": "node scripts/vercel-readiness.js",
-    "do-it": "npm run vercel-readiness"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "framer-motion": "^12.23.26",
+    "next": "16.1.1",
+    "react": "19.2.3",
+    "react-dom": "19.2.3"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.1.1",
+    "tailwindcss": "^4",
+    "typescript": "^5"
   }
 }
